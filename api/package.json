@@ -1,0 +1,25 @@
+{
+  "name": "apipourtodo",
+  "version": "1.0.0",
+  "main": "app.js",
+  "author": "Killian Fabro <me@killianfabro.fr>",
+  "license": "none",
+  "scripts": {
+    "start": "node app.js",
+    "watch": "nodemon app.js && mongod"
+  },
+  "dependencies": {
+    "body-parser": "^1.17.1",
+    "express": "^4.15.2",
+    "mongoose": "^4.9.9",
+    "morgan": "^1.8.1"
+  },
+  "devDependencies": {
+    "eslint": "^3.19.0",
+    "eslint-config-airbnb": "^14.1.0",
+    "eslint-plugin-import": "^2.2.0",
+    "eslint-plugin-jsx-a11y": "^5.0.1",
+    "eslint-plugin-react": "^7.0.1",
+    "nodemon": "^1.11.0"
+  }
+}

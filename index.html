@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+    <html>
+    <head>
+        <!-- Compiled and minified CSS -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+        <title>Test VueJS</title>
+    </head>
+    <body>
+        <div class="container">
+            <h1>Welcome Todo List !</h1>
+            <div id="app">
+                <div v-if="userLoggin">
+                <Todo></Todo>
+                </div>
+                <button @click="display">On</button>
+                <button @click="display(false)">Off</button>
+            </div>
+        </div>
+    <script src="vue.js"></script>
+    <script src="app.js"></script>
+    </body>
+</html>
