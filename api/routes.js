@@ -15,17 +15,34 @@ router.get('/todos/user/:userid', (req, res, next) => {
 });
 
 router.post('/todos/post', (req, res, next) => {
-  
+  console.log(req);
   var items = req.query.items;
   var iduser = req.query.iduser;
  
   
-  Todo.create({ items: items, idUser: iduser }, function (err, small) {
+  Todo.create({ items: items, idUser: iduser }, function (err, todo) {
     if (err) return handleError(err);
     // saved!
-    console.log(small);
+    console.log();
+    res.send(todo._id);
   })
-  res.send('ok');
+});
+
+router.post('/todos/post/delete', (req, res, next) => {
+  var id = req.query.id;
+  
+  Todo.remove({"_id": id}, function (err, remove) {
+    if (err) return handleError(err);
+    res.send('ok')
+  }
+  
+  );
+  // Todo.create({ items: items, idUser: iduser }, function (err, small) {
+  //   if (err) return handleError(err);
+  //   // saved!
+  //   console.log(small);
+  // })
+  // res.send('ok');
 });
 
 
