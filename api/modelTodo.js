@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 //Shema
 const TodoShema = new Schema({
   items:  String,
-  idUser: Number,
+  idUser: String,
 });
 //define model
 const Todo = mongoose.model('todo', TodoShema);

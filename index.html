@@ -9,19 +9,17 @@
         <div class="container">
             <h1>Welcome Todo List !</h1>
             <div id="app">
-
                 <div v-if="userLoggin">
+                <button type="button" v-on:click="logout()">Deconnexion</button>
                 <Todo></Todo>
                 </div>
                 <div v-else="userLoggin">
                     <User></User>
                 </div>
-                <button @click="display">On</button>
-                <button @click="display(false)">Off</button>
             </div>
         </div>
     <script src="vue.js"></script>
     <script src="app.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script>
+    <script src="axios.min.js"></script>
     </body>
 </html>

@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Todo = require('./modelTodo').Todo;
-
+const User = require('./modelUser').User;
 
 router.get('/todos/user/:userid', (req, res, next) => {
   Todo.find({ idUser: req.params.userid }, (err, items) => {
@@ -10,6 +10,16 @@ router.get('/todos/user/:userid', (req, res, next) => {
 
     req.items = items;
     res.send(items);
+    return next();
+  });
+});
+
+router.get('/users/check', (req, res, next) => {
+  User.find({ username: req.query.username, password: req.query.password }, (err, user) => {
+    console.log(req.query);
+    if (err) return next(err);
+
+    res.send(user);
     return next();
   });
 });
@@ -30,7 +40,7 @@ router.post('/todos/post', (req, res, next) => {
 
 router.post('/todos/post/delete', (req, res, next) => {
   var id = req.query.id;
-  
+
   Todo.remove({"_id": id}, function (err, remove) {
     if (err) return handleError(err);
     res.send('ok')

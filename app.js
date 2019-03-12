@@ -31,10 +31,14 @@ let Todo = Vue.component('Todo', {
             let value = this.newItems && this.newItems.trim()
             if (!value) {
                 return
+            }else{
+                console.log('pensez à mettre un message');
             }
             if(!this.$root.userId){
+                console.log('Err : UserAccount');
                 return false;
             }
+            
             axios({
                 method: 'post',
                 url: 'http://localhost:3000/api/todos/post',
@@ -77,7 +81,7 @@ let Todo = Vue.component('Todo', {
                     })
             })
         ))
-      }
+    }
 
 })
 
@@ -85,30 +89,11 @@ let Todo = Vue.component('Todo', {
 let User = Vue.component('User', {
     data: function () {
         return {
-            userRegister: {
-                0: {
-                    id: 1,
-                    username: 'demo1',
-                    password: 'demo1',
-                    rank: 0,
-                },
-                1: {
-                    id: 2,
-                    username: 'demo2',
-                    password: 'demo2',
-                    rank: 0,
-                },
-                2: {
-                    id: 3,
-                    username : 'admin',
-                    password : 'admin',
-                    rank : 10
-                }
-            },
             input: {
                 username : '',
                 password : '',
-            }
+            },
+            connexion: '',
         }  
     },
     template: `
@@ -116,19 +101,38 @@ let User = Vue.component('User', {
         <input type="text" name="username" v-model="input.username" id="username" placeholder="Username">
         <input type="password" name="password" v-model="input.password" id="password" placeholder="Password"> 
         <button type="button" v-on:click="login()">Connexion</button>
+        
     </div>
     `,
     methods: {
         login: function (){
             if(this.input.username != "" && this.input.password != "") {
-                this.userRegister.forEach((el, index) => {
-                    if (el.username === 'demo1'){
-                        let user = index;
-                        console.log(user);     
-                    } 
-                })
+
+                axios({
+                    method: 'get',
+                    url: 'http://localhost:3000/api/users/check',
+                        params: {
+                        username: this.input.username,
+                        password: this.input.password
+                    }
+                }).then(response => (
+                    this.connexion = response.data
+                ))
             }else{
                 console.log('Un des deux champ sont vides.')
+            }
+        },
+        
+    },
+    watch: {
+        connexion: function (val) {
+            if(val.length > 0){
+                console.log(val[0].username);
+                this.$root.userId = val[0]._id
+                this.$root.userRank = val[0].rank
+                this.$root.userLoggin = true;
+            }else{
+                console.log('mauvaise connexion');
             }
         }
     }
@@ -146,12 +150,10 @@ new Vue({
         userRank: 0,
     },
     methods:{
-        display: function(value){
-            if(value){
-                this.userLoggin = true;
-            }else{
-                this.userLoggin = false;
-            }
+        logout: function(){
+            this.$root.userLoggin = false
+            this.$root.userRank = 0
+            this.$root.userId = null
         }
     }
 })
