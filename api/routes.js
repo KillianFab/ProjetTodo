@@ -14,6 +14,12 @@ router.get('/todos/user/:userid', (req, res, next) => {
   });
 });
 
+router.get('/users/getall', (req, res, next) => {
+  User.find({}, function(err, users) {
+    res.send(users);
+  });
+});
+
 router.get('/users/check', (req, res, next) => {
   User.find({ username: req.query.username, password: req.query.password }, (err, user) => {
     console.log(req.query);

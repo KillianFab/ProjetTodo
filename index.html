@@ -9,12 +9,16 @@
         <div class="container">
             <h1>Welcome Todo List !</h1>
             <div id="app">
+               
                 <div v-if="userLoggin">
-                <button type="button" v-on:click="logout()">Deconnexion</button>
-                <Todo></Todo>
+                    <button type="button" v-on:click="logout()">Deconnexion</button>
+                    <Todo></Todo>
                 </div>
                 <div v-else="userLoggin">
                     <User></User>
+                </div>
+                <div v-if="userRank == 10">
+                    <Admin></Admin>
                 </div>
             </div>
         </div>
