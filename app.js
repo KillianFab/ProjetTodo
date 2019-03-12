@@ -32,12 +32,15 @@ let Todo = Vue.component('Todo', {
             if (!value) {
                 return
             }
+            if(!this.$root.userId){
+                return false;
+            }
             axios({
                 method: 'post',
                 url: 'http://localhost:3000/api/todos/post',
-                params: {
+                    params: {
                     items: value,
-                    iduser: 10
+                    iduser: this.$root.userId
                 }
             }).then(response => (
                 this.items.push({
@@ -61,6 +64,9 @@ let Todo = Vue.component('Todo', {
 
     },
     mounted () {
+        if(!this.$root.userId){
+            return false;
+        }
         axios.get('http://localhost:3000/api/todos/user/'+this.$root.userId, { crossdomain: true })
             .then(response => (
                 Object.keys(response.data).forEach(key => {
@@ -76,13 +82,66 @@ let Todo = Vue.component('Todo', {
 })
 
 
+let User = Vue.component('User', {
+    data: function () {
+        return {
+            userRegister: {
+                0: {
+                    id: 1,
+                    username: 'demo1',
+                    password: 'demo1',
+                    rank: 0,
+                },
+                1: {
+                    id: 2,
+                    username: 'demo2',
+                    password: 'demo2',
+                    rank: 0,
+                },
+                2: {
+                    id: 3,
+                    username : 'admin',
+                    password : 'admin',
+                    rank : 10
+                }
+            },
+            input: {
+                username : '',
+                password : '',
+            }
+        }  
+    },
+    template: `
+    <div>
+        <input type="text" name="username" v-model="input.username" id="username" placeholder="Username">
+        <input type="password" name="password" v-model="input.password" id="password" placeholder="Password"> 
+        <button type="button" v-on:click="login()">Connexion</button>
+    </div>
+    `,
+    methods: {
+        login: function (){
+            if(this.input.username != "" && this.input.password != "") {
+                this.userRegister.forEach((el, index) => {
+                    if (el.username === 'demo1'){
+                        let user = index;
+                        console.log(user);     
+                    } 
+                })
+            }else{
+                console.log('Un des deux champ sont vides.')
+            }
+        }
+    }
+
+})
+
 
 
 new Vue({
     el: '#app',
-    component: Todo,
+    component: {Todo, User},
     data: {
-        userId: 10,
+        userId: null,
         userLoggin: false,
         userRank: 0,
     },

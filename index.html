@@ -9,8 +9,12 @@
         <div class="container">
             <h1>Welcome Todo List !</h1>
             <div id="app">
+
                 <div v-if="userLoggin">
                 <Todo></Todo>
+                </div>
+                <div v-else="userLoggin">
+                    <User></User>
                 </div>
                 <button @click="display">On</button>
                 <button @click="display(false)">Off</button>
