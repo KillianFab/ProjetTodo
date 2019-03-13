@@ -9,9 +9,16 @@
 let store = {
     debug: true,
     state: {
-        items: []
+            items: [],
+            admin: {
+                editUserTodo: {
+                    username: '',
+                    id: '',
+                    edit: false,
+                }
+            }
+        }
     }
-  }
 
 // Todo liste
 let Todo = Vue.component('Todo', {
@@ -24,7 +31,7 @@ let Todo = Vue.component('Todo', {
 
     },
     template:  `
-    <div>  
+    <div>
         <ul>
             <li v-for="item in items">{{ item.message }} - > <button @click="removeTodo(item)">Remove Item</button></li>
         </ul>
@@ -52,7 +59,7 @@ let Todo = Vue.component('Todo', {
                     iduser: this.$root.userId
                 }
             }).then(response => (
-                store.state.items.push({
+                this.items.push({
                     id: response.data,
                     message: value,
                 })
@@ -86,6 +93,11 @@ let Todo = Vue.component('Todo', {
                     })
                 })
             ))
+    },
+    watch: {
+        items: function(val) {
+            console.log(val);
+        }
     }
 
 })
@@ -147,13 +159,19 @@ let Admin = Vue.component('Admin', {
     data: function () {
         return {
             listeUser: [],
-            items: store.state.items,
+            itemsEdit: [],
         }  
     },
     template: `
     <div>
+        <h3> Liste des users </h3>
         <ul>
             <li v-for="users in listeUser">Username : {{ users.username }} <button @click="editTodoUser(users.id)">Modifier la todo de l'user</button> </li>
+        </ul>
+
+        <h3> Modification de la todo de l'user </h3>
+        <ul>
+            <li v-for="item in itemsEdit">{{ item.message}}</li>
         </ul>
     </div>
     `,
@@ -173,12 +191,29 @@ let Admin = Vue.component('Admin', {
 
     methods: {
         editTodoUser: function(val){
-            console.log(val);
+            this.itemsEdit = []
+            store.state.admin.editUserTodo.id = val
+            if(!store.state.admin.editUserTodo.id){
+                return false;
+            }
+            axios.get('http://localhost:3000/api/todos/user/'+store.state.admin.editUserTodo.id, { crossdomain: true })
+                .then(response => (
+                    Object.keys(response.data).forEach(key => {
+                        let val = response.data[key];
+                        
+                        this.itemsEdit.push({
+                            message: val.items,
+                            id: val._id,
+                        })
+                    })
+                ))
             // Vider le store.state.items 
             // Mettre à jour le store.state.items
             // MEttre à jour le store.state.admin.editId
             // remettre à jour 
         },
+        saveEditTodoUser: function(){
+        }
     }
 })
 
@@ -196,6 +231,7 @@ new Vue({
     },
     methods:{
         logout: function(){
+            store.state.items = []
             this.$root.userLoggin = false
             this.$root.userRank = 0
             this.$root.userId = null
