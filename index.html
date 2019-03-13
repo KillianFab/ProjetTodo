@@ -1,29 +1,76 @@
 <!DOCTYPE html>
+
     <html>
     <head>
+            <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <!-- Compiled and minified CSS -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
         <title>Test VueJS</title>
     </head>
     <body>
-        <div class="container">
-            <h1>Welcome Todo List !</h1>
-            <div id="app">
-               
-                <div v-if="userLoggin">
-                    <button type="button" v-on:click="logout()">Deconnexion</button>
-                    <Todo></Todo>
+        <div id="app">
+            <nav class="blue darken-3" role="navigation">
+                <div class="nav-wrapper container"><a href="#" class="brand-logo center">Test VueJS</a>
+                    <ul v-if="userLoggin" class="right hide-on-med-and-down">
+                        <li>Salut, {{ userName }} <a class="btn-floating red darken-4 small" v-on:click="logout()"><i class="material-icons">close</i></a></li>
+                    </ul>
                 </div>
-                <div v-else="userLoggin">
-                    <User></User>
+            </nav>
+            <div class="container">
+                <transition name="fade">
+                <div class="row" v-if="userLoggin">
+                    <Todo v-bind:class="{ col: getAdmin(), s6: getAdmin() }"></Todo>
+                    <Admin v-bind:class="{ col: getAdmin(), s6: getAdmin() }" v-if="getAdmin()"></Admin>
                 </div>
-                <div v-if="userRank == 10">
-                    <Admin></Admin>
+                <div class="text-center" v-else="userLoggin">   
+                    <div class="z-depth-1 grey lighten-4 row" style="display: inline-block;padding: 32px 48px 0px;border: 1px solid rgb(238, 238, 238);margin-top: 30px;">
+                        <form class="col s12" method="post">
+                            <div class='row'>
+                                <div class='col s12'>
+                                    <h4>Connexion</h4>
+                                    <User></User>
+                                </div>
+                            </div>
+                        
+                        </form>
+                    </div>
                 </div>
+                </transition>
             </div>
         </div>
     <script src="vue.js"></script>
     <script src="app.js"></script>
     <script src="axios.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/js/materialize.min.js"></script>
     </body>
 </html>
+<style>
+        .input-field input[type=date]:focus + label,
+            .input-field input[type=text]:focus + label,
+            .input-field input[type=email]:focus + label,
+            .input-field input[type=password]:focus + label {
+              color: #e91e63;
+            }
+        
+            .input-field input[type=date]:focus,
+            .input-field input[type=text]:focus,
+            .input-field input[type=email]:focus,
+            .input-field input[type=password]:focus {
+              border-bottom: 2px solid #e91e63;
+              box-shadow: none;
+            }
+            .small{
+                height: 20px;
+                width: 20px;
+                line-height: 20px;
+            }
+            .small > .material-icons{
+                font-size: 15px;
+                font-weight: bold;
+            }
+            .text-center{
+                text-align:center;
+            }
+            
+            </style>
