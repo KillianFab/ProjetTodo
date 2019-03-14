@@ -56,7 +56,7 @@ let Todo = Vue.component('Todo', {
             
             axios({
                 method: 'post',
-                url: 'http://localhost:3000/api/todos/post',
+                url: 'http://54.37.229.55:3000/api/todos/post',
                     params: {
                     items: value,
                     iduser: this.$root.userId
@@ -86,7 +86,7 @@ let Todo = Vue.component('Todo', {
         if(!this.$root.userId){
             return false;
         }
-        axios.get('http://localhost:3000/api/todos/user/'+this.$root.userId, { crossdomain: true })
+        axios.get('http://54.37.229.55:3000/api/todos/user/'+this.$root.userId, { crossdomain: true })
             .then(response => (
                 Object.keys(response.data).forEach(key => {
                     let val = response.data[key];
@@ -137,7 +137,7 @@ let User = Vue.component('User', {
 
                 axios({
                     method: 'get',
-                    url: 'http://localhost:3000/api/users/check',
+                    url: 'http://54.37.229.55:3000/api/users/check',
                         params: {
                         username: this.input.username,
                         password: this.input.password
@@ -196,7 +196,7 @@ let Admin = Vue.component('Admin', {
     </div>
     `,
     mounted () {
-        axios.get('http://localhost:3000/api/users/getall')
+        axios.get('http://54.37.229.55:3000/api/users/getall')
             .then(response => (
                 Object.keys(response.data).forEach(key => {
                     let val = response.data[key];
@@ -221,7 +221,7 @@ let Admin = Vue.component('Admin', {
                 return false;
             }
             this.usernameEdit = username
-            axios.get('http://localhost:3000/api/todos/user/'+store.state.admin.editUserTodo.id, { crossdomain: true })
+            axios.get('http://54.37.229.55:3000/api/todos/user/'+store.state.admin.editUserTodo.id, { crossdomain: true })
                 .then(response => (
                     Object.keys(response.data).forEach(key => {
                         let val = response.data[key];
@@ -242,7 +242,7 @@ let Admin = Vue.component('Admin', {
         deleteItemsTodoUser: function(item){
             axios({
                 method: 'post',
-                url: 'http://localhost:3000/api/todos/post/delete',
+                url: 'http://54.37.229.55:3000/api/todos/post/delete',
                 params: {
                     id: item.id
                 }
